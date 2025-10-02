@@ -1,6 +1,7 @@
 // components/media/MediaListItem.tsx
 
 import { MediaItem } from "@/hooks/use-fetch-media";
+import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MediaPoster from "./MediaPoster";
@@ -10,6 +11,7 @@ interface MediaListItemProps {
 }
 
 export default function MediaListItem({ item }: MediaListItemProps) {
+  const router = useRouter();
   const title = item.title || item.name;
   const date = item.release_date || item.first_air_date;
 
@@ -22,6 +24,10 @@ export default function MediaListItem({ item }: MediaListItemProps) {
   const formattedDate = date
     ? new Date(date).toDateString().substring(4)
     : "N/A";
+
+  const handlePress = () => {
+    router.push(`/movie/${item.id}`);
+  };
 
   return (
     <View style={styles.container}>
@@ -45,9 +51,8 @@ export default function MediaListItem({ item }: MediaListItemProps) {
         {/* More Detail ボタン */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() => {
-            console.log(`More details for ID: ${item.id}`);
-          }} // 次のステップでナビゲーションを実装
+          // 【修正】handlePress を呼び出す
+          onPress={handlePress}
         >
           <Text style={styles.buttonText}>More Detail</Text>
         </TouchableOpacity>

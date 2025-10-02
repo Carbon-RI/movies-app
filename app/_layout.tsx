@@ -28,7 +28,18 @@ export default function RootLayout() {
             title: "Movies App",
             headerTransparent: false,
             headerStyle: {
-              backgroundColor: "#002E4E", // ヘッダーの背景色をティールに設定
+              backgroundColor: "#002E4E",
+            },
+            headerTintColor: "white",
+          }}
+        />
+        {/* 【新規】映画詳細画面のルートを追加 (ファイル名: movie/[id].tsx を想定) */}
+        <Stack.Screen
+          name="movie/[id]" // ファイル名に合わせる
+          options={{
+            title: "Detail", // 遷移先のヘッダータイトル
+            headerStyle: {
+              backgroundColor: "#002E4E",
             },
             headerTintColor: "white",
           }}
@@ -38,7 +49,6 @@ export default function RootLayout() {
           options={{ presentation: "modal", title: "Modal" }}
         />
       </Stack>
-      {/* 【修正2】StatusBarのスタイルを 'light' に設定して、文字を白にする */}
       <StatusBar style="light" />
     </ThemeProvider>
   );

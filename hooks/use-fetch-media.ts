@@ -7,9 +7,10 @@ import { TMDB_API_KEY, TMDB_BASE_URL } from "@/constants/apiConfig";
 // APIから返されるメディアアイテムの基本的な型定義
 export interface MediaItem {
   id: number;
-  title?: string; // 映画用
-  name?: string; // TV番組用
+  title?: string;
+  name?: string;
   overview: string;
+  popularity: number;
   release_date?: string;
   first_air_date?: string;
   poster_path: string | null;

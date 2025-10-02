@@ -41,15 +41,11 @@ const SEARCH_ENDPOINTS = {
 // 詳細情報取得エンドポイント
 const DETAIL_BASE_URL = "/movie/";
 
-// --- ここまで追加したエンドポイントの定義 ---
-
-// ⭐ すべての定数をまとめて export します ⭐
 export {
   TMDB_API_KEY,
   TMDB_BASE_URL,
   TMDB_IMAGE_BASE_URL,
   POSTER_SIZE,
-  // 新しく追加したエンドポイント群もエクスポートに追加
   MOVIE_ENDPOINTS,
   TV_ENDPOINTS,
   SEARCH_ENDPOINTS,
