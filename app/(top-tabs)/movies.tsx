@@ -14,12 +14,12 @@ import { MediaItem, useFetchMedia } from "@/hooks/use-fetch-media";
 
 // 選択オプションを定義 (表示用の 'display' キーを追加)
 const MOVIE_OPTIONS = [
-  { label: "Popular", value: MOVIE_ENDPOINTS.popular, display: "Popular" },
   {
     label: "Now Playing",
     value: MOVIE_ENDPOINTS.nowPlaying,
     display: "Now Playing",
   },
+  { label: "Popular", value: MOVIE_ENDPOINTS.popular, display: "Popular" },
   { label: "Top Rated", value: MOVIE_ENDPOINTS.topRated, display: "Top Rated" },
   { label: "Upcoming", value: MOVIE_ENDPOINTS.upcoming, display: "Upcoming" },
 ];
@@ -100,7 +100,6 @@ export default function MoviesScreen() {
       {/* 1. カスタムドロップダウンボタン (固定ヘッダー) */}
       <View style={styles.headerWrapper}>
         <TouchableOpacity style={styles.dropdownButton} onPress={toggleModal}>
-          {/* 現在の選択肢を表示（例: now_playing 🔻） */}
           <Text style={styles.dropdownText}>
             {currentOption.display.toLowerCase().replace(" ", "_")}
           </Text>
@@ -156,7 +155,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
     backgroundColor: "#f9f9f9",
-    alignItems: "flex-start", // 左寄せ
+    alignItems: "center", // 左寄せ
   },
   dropdownButton: {
     flexDirection: "row",
@@ -171,7 +170,7 @@ const styles = StyleSheet.create({
   dropdownText: {
     fontSize: 16,
     fontWeight: "bold",
-    textTransform: "uppercase", // now_playing のように小文字にする
+    textTransform: "uppercase",
   },
 
   // --- リストコンテナのスタイル ---

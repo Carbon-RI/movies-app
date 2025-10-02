@@ -1,8 +1,8 @@
 // components/media/MediaPoster.tsx
 
+import { POSTER_SIZE, TMDB_IMAGE_BASE_URL } from "@/constants/apiConfig";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { TMDB_IMAGE_BASE_URL, POSTER_SIZE } from "@/constants/apiConfig";
 
 interface MediaPosterProps {
   posterPath: string | null;
@@ -29,7 +29,7 @@ export default function MediaPoster({ posterPath }: MediaPosterProps) {
 const styles = StyleSheet.create({
   container: {
     width: 90,
-    height: 135, // 2:3 ratio for posters
+    height: 90,
     borderRadius: 8,
     overflow: "hidden",
     backgroundColor: "#eee",

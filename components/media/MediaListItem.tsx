@@ -1,8 +1,8 @@
 // components/media/MediaListItem.tsx
 
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MediaItem } from "@/hooks/use-fetch-media";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MediaPoster from "./MediaPoster";
 
 interface MediaListItemProps {
@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     // flex-startではなく、スペースを空けるために space-between を利用
     justifyContent: "space-between",
     paddingVertical: 5,
+    marginRight: 30,
   },
   title: {
     fontSize: 16,
@@ -86,15 +87,16 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 8,
-    backgroundColor: "teal",
+    backgroundColor: "skyblue",
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 5,
-    alignSelf: "flex-start",
+    alignSelf: "stretch",
   },
   buttonText: {
     color: "white",
     fontSize: 14,
     fontWeight: "600",
+    textAlign: "center",
   },
 });
