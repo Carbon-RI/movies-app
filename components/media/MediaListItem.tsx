@@ -26,7 +26,8 @@ export default function MediaListItem({ item }: MediaListItemProps) {
     : "N/A";
 
   const handlePress = () => {
-    router.push(`/movie/${item.id}`);
+    const mediaType = item.name ? "tv" : "movie";
+    router.push(`/${mediaType}/${item.id}`);
   };
 
   return (
@@ -49,11 +50,7 @@ export default function MediaListItem({ item }: MediaListItemProps) {
         </Text>
 
         {/* More Detail ボタン */}
-        <TouchableOpacity
-          style={styles.button}
-          // 【修正】handlePress を呼び出す
-          onPress={handlePress}
-        >
+        <TouchableOpacity style={styles.button} onPress={handlePress}>
           <Text style={styles.buttonText}>More Detail</Text>
         </TouchableOpacity>
       </View>

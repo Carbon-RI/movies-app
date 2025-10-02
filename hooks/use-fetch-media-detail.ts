@@ -1,34 +1,32 @@
-// hooks/use-fetch-media-detail.ts
+import { TMDB_API_KEY, TMDB_BASE_URL } from "@/constants/apiConfig";
+import { MovieDetail, TVShowDetail } from "@/types/media";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-import { useState, useEffect } from "react";
-import axios, { AxiosError } from "axios";
-import {
-  TMDB_API_KEY,
-  TMDB_BASE_URL,
-  DETAIL_BASE_URL, // 詳細用のベースパス
-} from "@/constants/apiConfig";
-import { MovieDetail } from "@/types/media"; // 詳細データの型をインポート
-
-// カスタムフックの戻り値の型定義
+// Tを導入し、フックの戻り値の型を汎用化します。
 interface FetchState<T> {
   data: T | null;
   loading: boolean;
-  error: Error | null; // Errorオブジェクトを統一して返す
+  error: Error | null;
 }
 
 /**
  * TMDb API から単一のメディアの詳細データを取得するカスタムフック
- * @param id - 映画またはTV番組のID (useLocalSearchParamsから取得)
+ * @param id - 映画またはTV番組のID
+ * @param mediaType - 取得するメディアのタイプ ('movie' または 'tv')
+ * @returns 取得状態 (data, loading, error)
  */
-export const useFetchMediaDetail = (
-  id: string | string[] | undefined
-): FetchState<MovieDetail> => {
-  const [data, setData] = useState<MovieDetail | null>(null);
+// T を使用してフックを汎用化し、mediaType パラメータを追加します
+export const useFetchMediaDetail = <T extends MovieDetail | TVShowDetail>(
+  id: string | string[] | undefined,
+  mediaType: "movie" | "tv" // 取得対象の種類を指定
+): FetchState<T> => {
+  // データの型を T に変更します
+  const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    // 1. IDのバリデーションと整形
     const mediaId = Array.isArray(id) ? id[0] : id;
 
     if (!mediaId) {
@@ -45,18 +43,18 @@ export const useFetchMediaDetail = (
     setLoading(true);
     setError(null);
 
-    // 2. API URLの構築 (今回は /movie/{id} を使用)
-    const url = `${TMDB_BASE_URL}${DETAIL_BASE_URL}${mediaId}?api_key=${TMDB_API_KEY}&language=en-US`;
+    // mediaTypeに基づいて API パスを 'movie' または 'tv' に切り替えます
+    const path = mediaType;
+    const url = `${TMDB_BASE_URL}/${path}/${mediaId}?api_key=${TMDB_API_KEY}&language=en-US`;
 
     const fetchData = async () => {
       try {
-        const response = await axios.get<MovieDetail>(url);
-        // 詳細エンドポイントは results 配列ではなく、直接単一のオブジェクトを返す
+        // axios.get に T を指定し、型安全な取得を行います
+        const response = await axios.get<T>(url);
         setData(response.data);
       } catch (e) {
         let fetchError: Error;
         if (axios.isAxiosError(e)) {
-          // Axiosのエラーを適切なメッセージでラップ
           fetchError = new Error(
             `API Error: ${e.response?.status} - ${e.message}`
           );
@@ -72,7 +70,7 @@ export const useFetchMediaDetail = (
     };
 
     fetchData();
-  }, [id]);
+  }, [id, mediaType]); // mediaType が変更されたら再取得するように依存配列に追加
 
   return { data, loading, error };
 };

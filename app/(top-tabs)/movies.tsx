@@ -1,10 +1,8 @@
-// app/(top-tabs)/movies.tsx (カスタムドロップダウン + ボトムモーダル版)
+// app/(top-tabs)/movies.tsx
 
-import React from "react";
-// 【修正】Pickerから必要なコンポーネントに変更
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-// 【新規】ボトムモーダルとアイコンをインポート
 import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ReactNativeModal from "react-native-modal";
 
 import MediaList from "@/components/media/MediaList";
@@ -12,7 +10,6 @@ import LoadingIndicator from "@/components/ui/LoadingIndicator";
 import { MOVIE_ENDPOINTS } from "@/constants/apiConfig";
 import { MediaItem, useFetchMedia } from "@/hooks/use-fetch-media";
 
-// 選択オプションを定義 (表示用の 'display' キーを追加)
 const MOVIE_OPTIONS = [
   {
     label: "Now Playing",
@@ -24,14 +21,12 @@ const MOVIE_OPTIONS = [
   { label: "Upcoming", value: MOVIE_ENDPOINTS.upcoming, display: "Upcoming" },
 ];
 
-// 型を定義
 type MovieEndpoint = (typeof MOVIE_ENDPOINTS)[keyof typeof MOVIE_ENDPOINTS];
 
 export default function MoviesScreen() {
   const [selectedEndpoint, setSelectedEndpoint] = React.useState<MovieEndpoint>(
-    MOVIE_OPTIONS[0].value // 初期選択は 'Popular'
+    MOVIE_OPTIONS[0].value
   );
-  // 【新規】モーダル表示の状態
   const [isModalVisible, setModalVisible] = React.useState(false);
 
   const {
@@ -40,7 +35,6 @@ export default function MoviesScreen() {
     error: mediaError,
   } = useFetchMedia<MediaItem[]>(selectedEndpoint);
 
-  // 現在選択されているオプションを取得
   const currentOption =
     MOVIE_OPTIONS.find((opt) => opt.value === selectedEndpoint) ||
     MOVIE_OPTIONS[0];
@@ -51,7 +45,7 @@ export default function MoviesScreen() {
 
   const handleSelect = (endpoint: MovieEndpoint) => {
     setSelectedEndpoint(endpoint);
-    setModalVisible(false); // 選択後モーダルを閉じる
+    setModalVisible(false);
   };
 
   if (mediaLoading) {
@@ -70,7 +64,6 @@ export default function MoviesScreen() {
     );
   }
 
-  // --- モーダル内のリストアイテムコンポーネント ---
   const ModalOptionItem = ({
     option,
   }: {
@@ -82,22 +75,18 @@ export default function MoviesScreen() {
         style={[styles.modalItem, isSelected && styles.modalItemSelected]}
         onPress={() => handleSelect(option.value)}
       >
-        {/* displayフィールドを小文字＋アンダースコア表記に変換して表示 */}
         <Text style={styles.modalItemText}>
           {option.display.toLowerCase().replace(" ", "_")}
         </Text>
-        {/* 選択されたものにチェックマークと緑色を適用 */}
         {isSelected && (
           <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
         )}
       </TouchableOpacity>
     );
   };
-  // ----------------------------------------------------
 
   return (
     <View style={styles.container}>
-      {/* 1. カスタムドロップダウンボタン (固定ヘッダー) */}
       <View style={styles.headerWrapper}>
         <TouchableOpacity style={styles.dropdownButton} onPress={toggleModal}>
           <Text style={styles.dropdownText}>
@@ -112,7 +101,6 @@ export default function MoviesScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* 2. データリスト (スクロール部分 - 残りの高さを占有) */}
       <View style={styles.listContainer}>
         {mediaData ? (
           <MediaList data={mediaData} />
@@ -123,16 +111,14 @@ export default function MoviesScreen() {
         )}
       </View>
 
-      {/* 3. ボトムモーダル */}
       <ReactNativeModal
         isVisible={isModalVisible}
         onBackdropPress={toggleModal}
         style={styles.bottomModal}
-        animationIn="slideInUp" // 下からビヨーンと現れる
+        animationIn="slideInUp"
         animationOut="slideOutDown"
       >
         <View style={styles.modalContent}>
-          {/* MOVIE_OPTIONSをリストとして表示 */}
           {MOVIE_OPTIONS.map((option) => (
             <ModalOptionItem key={option.value} option={option} />
           ))}
@@ -148,14 +134,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
 
-  // --- カスタムドロップダウン関連のスタイル ---
   headerWrapper: {
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
     backgroundColor: "#f9f9f9",
-    alignItems: "center", // 左寄せ
+    alignItems: "center",
   },
   dropdownButton: {
     flexDirection: "row",

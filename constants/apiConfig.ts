@@ -39,7 +39,7 @@ const SEARCH_ENDPOINTS = {
 };
 
 // 詳細情報取得エンドポイント
-const DETAIL_BASE_URL = "/movie/";
+// const DETAIL_BASE_URL = "/movie/";
 
 export {
   TMDB_API_KEY,
@@ -49,5 +49,4 @@ export {
   MOVIE_ENDPOINTS,
   TV_ENDPOINTS,
   SEARCH_ENDPOINTS,
-  DETAIL_BASE_URL,
 };

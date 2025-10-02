@@ -1,4 +1,4 @@
-// app/movie/[id].tsx
+// app/tv/[id].tsx
 
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import MediaPoster from "../../components/media/MediaPoster";
 import { useFetchMediaDetail } from "../../hooks/use-fetch-media-detail";
-import { MovieDetail } from "../../types/media";
+import { TVShowDetail } from "../../types/media";
 
 // 画面幅を取得し、レイアウトに利用
 const { width } = Dimensions.get("window");
@@ -21,19 +21,19 @@ const { width } = Dimensions.get("window");
 const POSTER_VIEW_WIDTH = width * 0.75;
 const POSTER_VIEW_HEIGHT = POSTER_VIEW_WIDTH * 1.0;
 
-export default function MovieDetailScreen() {
+export default function TVShowDetailScreen() {
   const { id } = useLocalSearchParams();
   const {
     data: mediaData,
     loading,
     error,
-  } = useFetchMediaDetail<MovieDetail>(id, "movie");
+  } = useFetchMediaDetail<TVShowDetail>(id, "tv");
 
   // --- ローディング/エラー処理 ---
   if (!id) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={styles.errorText}>Movie ID not found.</Text>
+        <Text style={styles.errorText}>TVshow ID not found.</Text>
       </View>
     );
   }
@@ -59,7 +59,9 @@ export default function MovieDetailScreen() {
   if (!mediaData) {
     return (
       <View style={styles.container}>
-        <Text style={styles.errorText}>Movie details could not be loaded.</Text>
+        <Text style={styles.errorText}>
+          TVshow details could not be loaded.
+        </Text>
       </View>
     );
   }
