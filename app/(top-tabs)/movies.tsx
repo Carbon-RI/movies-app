@@ -1,14 +1,13 @@
 // app/(top-tabs)/movies.tsx
 
+import { Picker } from "@react-native-picker/picker";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-// NOTE: Pickerを使用する場合は、npm install @react-native-picker/picker が必要です
-import { Picker } from "@react-native-picker/picker";
 
-import { useFetchMedia, MediaItem } from "@/hooks/use-fetch-media";
-import { MOVIE_ENDPOINTS } from "@/constants/apiConfig";
-import LoadingIndicator from "@/components/ui/LoadingIndicator";
 import MediaList from "@/components/media/MediaList";
+import LoadingIndicator from "@/components/ui/LoadingIndicator";
+import { MOVIE_ENDPOINTS } from "@/constants/apiConfig";
+import { MediaItem, useFetchMedia } from "@/hooks/use-fetch-media";
 
 // トグルで選択するオプションを定義
 const MOVIE_OPTIONS = [
@@ -73,10 +72,10 @@ export default function MoviesScreen() {
 
   return (
     <View style={styles.container}>
-      {/* 1. トグル/セレクター部分 */}
       <View style={styles.selectorWrapper}>
         <Picker
           selectedValue={selectedEndpoint}
+          // 【修正】Pickerのスタイルを明示的に設定
           style={styles.picker}
           onValueChange={(itemValue: MovieEndpoint) =>
             setSelectedEndpoint(itemValue)
@@ -97,7 +96,7 @@ export default function MoviesScreen() {
 
       {/* 3. データリスト */}
       {mediaData ? (
-        <MediaList data={mediaData} />
+        <MediaList data={mediaData} style={{ flex: 1 }} />
       ) : (
         <Text style={styles.noData}>No data available for this category.</Text>
       )}
@@ -110,6 +109,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+
+  // --- 【追加・修正】エラー表示関連のスタイル ---
   errorContainer: {
     flex: 1,
     justifyContent: "center",
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#D32F2F",
+    color: "#D32F2F", // Red
     marginBottom: 8,
   },
   errorDetail: {
@@ -135,15 +136,22 @@ const styles = StyleSheet.create({
     color: "#777",
     textAlign: "center",
   },
+  // --- エラー表示関連のスタイルはここまで ---
+
   selectorWrapper: {
     paddingHorizontal: 15,
     marginBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
+    backgroundColor: "#f9f9f9",
   },
   picker: {
     height: 50,
     width: "100%",
+    backgroundColor: "white",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#ddd",
   },
   listTitle: {
     fontSize: 20,
