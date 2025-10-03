@@ -1,14 +1,13 @@
 // hooks/use-fetch-media.ts
 
-import { useState, useEffect } from "react";
-import axios from "axios";
 import { TMDB_API_KEY, TMDB_BASE_URL } from "@/constants/apiConfig";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export interface MediaItem {
   id: number;
   title?: string;
   name?: string;
-  overview: string;
   popularity: number;
   release_date?: string;
   first_air_date?: string;
@@ -19,20 +18,21 @@ export interface MediaItem {
 interface FetchState<T> {
   data: T | null;
   loading: boolean;
-  error: string | null;
+  error: Error | null;
 }
 
 export const useFetchMedia = <T = MediaItem[]>(
-  endpoint: string,
-  query?: string
+  endpoint: string
 ): FetchState<T> => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     if (!TMDB_API_KEY) {
-      setError("API Key is missing. Check your .env and app.config.js.");
+      setError(
+        new Error("API Key is missing. Check your .env and app.config.js.")
+      );
       setLoading(false);
       return;
     }
@@ -42,18 +42,20 @@ export const useFetchMedia = <T = MediaItem[]>(
 
     let url = `${TMDB_BASE_URL}${endpoint}?api_key=${TMDB_API_KEY}&language=en-US`;
 
-    if (query) {
-      url += `&query=${encodeURIComponent(query)}`;
-    }
-
     const fetchData = async () => {
       try {
         const response = await axios.get(url);
-        const dataToSet = (response.data.results as T) || (response.data as T);
+        const dataToSet = response.data.results as T;
 
         setData(dataToSet);
       } catch (e) {
-        setError(e instanceof Error ? e.message : "An unknown error occurred.");
+        setError(
+          axios.isAxiosError(e)
+            ? new Error(`API Error: ${e.response?.status} - ${e.message}`)
+            : e instanceof Error
+            ? e
+            : new Error("An unknown error occurred.")
+        );
         setData(null);
       } finally {
         setLoading(false);
@@ -61,7 +63,7 @@ export const useFetchMedia = <T = MediaItem[]>(
     };
 
     fetchData();
-  }, [endpoint, query]);
+  }, [endpoint]);
 
   return { data, loading, error } as FetchState<T>;
 };

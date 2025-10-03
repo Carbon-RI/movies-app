@@ -60,9 +60,8 @@ export default function MediaListScreen({
   if (mediaError) {
     return (
       <View style={styles.errorContainer}>
-        {/* エラーメッセージを汎用化 */}
         <Text style={styles.errorText}>Error Loading {mediaType}:</Text>
-        <Text style={styles.errorDetail}>{mediaError}</Text>
+        <Text style={styles.errorDetail}>{mediaError.message}</Text>
         <Text style={styles.errorInstruction}>
           Please check your API key and network connection.
         </Text>

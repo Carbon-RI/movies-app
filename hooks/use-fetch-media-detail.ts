@@ -1,9 +1,9 @@
 // hooks/use-fetch-media-detail.ts
 
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { TMDB_API_KEY, TMDB_BASE_URL } from "@/constants/apiConfig";
 import { MovieDetail, TVShowDetail } from "@/types/media";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 interface FetchState<T> {
   data: T | null;
@@ -42,16 +42,13 @@ export const useFetchMediaDetail = <T extends MovieDetail | TVShowDetail>(
         const response = await axios.get<T>(url);
         setData(response.data);
       } catch (e) {
-        let fetchError: Error;
-        if (axios.isAxiosError(e)) {
-          fetchError = new Error(
-            `API Error: ${e.response?.status} - ${e.message}`
-          );
-        } else {
-          fetchError =
-            e instanceof Error ? e : new Error("An unknown error occurred.");
-        }
-        setError(fetchError);
+        setError(
+          axios.isAxiosError(e)
+            ? new Error(`API Error: ${e.response?.status} - ${e.message}`)
+            : e instanceof Error
+            ? e
+            : new Error("An unknown error occurred.")
+        );
         setData(null);
       } finally {
         setLoading(false);
