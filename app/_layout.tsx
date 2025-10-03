@@ -29,7 +29,7 @@ export default function RootLayout() {
               backgroundColor: "#002E4E",
             },
             headerTintColor: "white",
-            // 💡 修正点: コンテンツ領域の背景色を白に設定
+
             contentStyle: {
               backgroundColor: "#ffffff",
             },
@@ -43,7 +43,7 @@ export default function RootLayout() {
               backgroundColor: "#002E4E",
             },
             headerTintColor: "white",
-            // 💡 修正点: コンテンツ領域の背景色を白に設定
+
             contentStyle: {
               backgroundColor: "#ffffff",
             },
@@ -57,7 +57,7 @@ export default function RootLayout() {
               backgroundColor: "#002E4E",
             },
             headerTintColor: "white",
-            // 💡 修正点: コンテンツ領域の背景色を白に設定
+
             contentStyle: {
               backgroundColor: "#ffffff",
             },

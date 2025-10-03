@@ -14,13 +14,10 @@ export default function MediaListItem({ item }: MediaListItemProps) {
   const router = useRouter();
   const title = item.title || item.name;
   const date = item.release_date || item.first_air_date;
-
-  // Popularityを丸めて表示（小数点以下を四捨五入）
   const popularity = (item as any).popularity
     ? Math.round((item as any).popularity)
     : "N/A";
 
-  // 日付のフォーマット (例: 2024-01-01)
   const formattedDate = date
     ? new Date(date).toDateString().substring(4)
     : "N/A";
@@ -39,17 +36,14 @@ export default function MediaListItem({ item }: MediaListItemProps) {
           {title}
         </Text>
 
-        {/* Popularity */}
         <Text style={styles.detailText}>
           Popularity: <Text style={styles.highlight}>{popularity}</Text>
         </Text>
 
-        {/* Release Date */}
         <Text style={styles.detailText}>
           Release Date: <Text style={styles.highlight}>{formattedDate}</Text>
         </Text>
 
-        {/* More Detail ボタン */}
         <TouchableOpacity style={styles.button} onPress={handlePress}>
           <Text style={styles.buttonText}>More Detail</Text>
         </TouchableOpacity>
@@ -68,7 +62,6 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flex: 1,
-    // flex-startではなく、スペースを空けるために space-between を利用
     justifyContent: "space-between",
     paddingVertical: 5,
     marginRight: 30,

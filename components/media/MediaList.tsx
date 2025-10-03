@@ -1,4 +1,4 @@
-// components/media/MediaList.tsx (FlatListに直接flex: 1を適用)
+// components/media/MediaList.tsx
 
 import { MediaItem } from "@/hooks/use-fetch-media";
 import React from "react";
@@ -24,7 +24,7 @@ export default function MediaList({ data }: MediaListProps) {
       renderItem={({ item }) => <MediaListItem item={item} />}
       keyExtractor={(item) => item.id.toString()}
       showsVerticalScrollIndicator={true}
-      style={styles.list} // flex: 1 を適用
+      style={styles.list}
     />
   );
 }
