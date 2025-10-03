@@ -1,3 +1,3 @@
-//hooks/use-color-scheme.ts
+// //hooks/use-color-scheme.ts
 
-export { useColorScheme } from "react-native";
+// export { useColorScheme } from "react-native";

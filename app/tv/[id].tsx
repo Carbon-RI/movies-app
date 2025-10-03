@@ -1,7 +1,7 @@
 // app/tv/[id].tsx
 
-import { useLocalSearchParams } from "expo-router";
-import React from "react";
+import { useLocalSearchParams, useNavigation } from "expo-router";
+import React, { useLayoutEffect } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -20,12 +20,22 @@ const POSTER_VIEW_WIDTH = width * 0.75;
 const POSTER_VIEW_HEIGHT = POSTER_VIEW_WIDTH * 1.0;
 
 export default function TVShowDetailScreen() {
+  const navigation = useNavigation();
   const { id } = useLocalSearchParams();
   const {
     data: mediaData,
     loading,
     error,
   } = useFetchMediaDetail<TVShowDetail>(id, "tv");
+
+  useLayoutEffect(() => {
+    if (mediaData && (mediaData.title || mediaData.name)) {
+      const title = mediaData.title || mediaData.name;
+      navigation.setOptions({
+        title: title,
+      });
+    }
+  }, [mediaData, navigation]);
 
   if (!id) {
     return (
