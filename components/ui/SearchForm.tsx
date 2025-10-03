@@ -4,7 +4,6 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
   Alert,
-  Button,
   StyleSheet,
   Text,
   TextInput,
@@ -88,7 +87,18 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
         </TouchableOpacity>
 
         <View style={styles.searchButtonContainer}>
-          <Button title="Search" onPress={handleSearch} />
+          <TouchableOpacity
+            style={styles.customSearchButton}
+            onPress={handleSearch}
+          >
+            <Ionicons
+              name="search"
+              size={18}
+              color="white"
+              style={styles.searchButtonIcon}
+            />
+            <Text style={styles.searchButtonText}>Search</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -166,9 +176,26 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
   },
+  customSearchButton: {
+    height: "100%",
+    borderRadius: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#0dadd9",
+    paddingHorizontal: 10,
+  },
+  searchButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
   warningText: {
     textAlign: "left",
     marginTop: 5,
     fontSize: 12,
+  },
+  searchButtonIcon: {
+    marginRight: 6,
   },
 });

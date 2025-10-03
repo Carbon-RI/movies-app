@@ -3,7 +3,7 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
-
+import CustomBackButton from "../components/ui/CustomBackButton";
 export const unstable_settings = {
   anchor: "(top-tabs)",
 };
@@ -34,11 +34,10 @@ export default function RootLayout() {
             headerStyle: {
               backgroundColor: "white",
             },
-            headerTintColor: "black",
             contentStyle: {
               backgroundColor: "#ffffff",
             },
-            headerBackTitle: "Back to List",
+            headerLeft: () => <CustomBackButton />,
           }}
         />
         <Stack.Screen
@@ -47,12 +46,11 @@ export default function RootLayout() {
             headerStyle: {
               backgroundColor: "white",
             },
-            headerTintColor: "black",
 
             contentStyle: {
               backgroundColor: "#ffffff",
             },
-            headerBackTitle: "Back to List",
+            headerLeft: () => <CustomBackButton />,
           }}
         />
       </Stack>
