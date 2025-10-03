@@ -16,7 +16,7 @@ import { TVShowDetail } from "../../types/media";
 
 const { width } = Dimensions.get("window");
 
-const POSTER_VIEW_WIDTH = width * 0.75;
+const POSTER_VIEW_WIDTH = width * 0.6;
 const POSTER_VIEW_HEIGHT = POSTER_VIEW_WIDTH * 1.0;
 
 export default function TVShowDetailScreen() {
@@ -91,7 +91,7 @@ export default function TVShowDetailScreen() {
 
         <View style={styles.infoBox}>
           <Text style={styles.infoText}>
-            poplularity:{" "}
+            Poplularity:{" "}
             <Text style={styles.highlight}>
               {mediaData.popularity != null
                 ? mediaData.popularity.toFixed(1)
@@ -99,7 +99,7 @@ export default function TVShowDetailScreen() {
             </Text>
           </Text>
           <Text style={styles.infoText}>
-            | released_date:{" "}
+            | Released Date:{" "}
             {mediaData.release_date || mediaData.first_air_date || "N/A"}
           </Text>
         </View>
@@ -130,11 +130,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: "100%",
   },
-  posterContainer: {},
+  posterContainer: {
+    marginTop: 20,
+    marginBottom: 30,
+  },
   detailPoster: {
     width: POSTER_VIEW_WIDTH,
     height: POSTER_VIEW_HEIGHT,
-    marginBottom: 20,
+    marginBottom: 0,
     marginRight: 0,
   },
   infoBox: {

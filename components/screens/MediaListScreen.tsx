@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   dropdownButton: {
+    width: "70%",
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 8,
