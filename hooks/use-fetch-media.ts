@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { TMDB_API_KEY, TMDB_BASE_URL } from "@/constants/apiConfig";
 
-// APIから返されるメディアアイテムの基本的な型定義
 export interface MediaItem {
   id: number;
   title?: string;
@@ -17,18 +16,12 @@ export interface MediaItem {
   media_type?: "movie" | "tv" | "person";
 }
 
-// カスタムフックの戻り値の型定義
 interface FetchState<T> {
   data: T | null;
   loading: boolean;
   error: string | null;
 }
 
-/**
- * TMDB API からデータを取得するためのカスタムフック
- * @param endpoint - APIのパス (例: /movie/popular)
- * @param query - 検索クエリ文字列 (検索時のみ)
- */
 export const useFetchMedia = <T = MediaItem[]>(
   endpoint: string,
   query?: string
@@ -38,7 +31,6 @@ export const useFetchMedia = <T = MediaItem[]>(
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // APIキーがない場合は処理を中断
     if (!TMDB_API_KEY) {
       setError("API Key is missing. Check your .env and app.config.js.");
       setLoading(false);
