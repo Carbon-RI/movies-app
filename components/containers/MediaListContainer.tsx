@@ -1,7 +1,5 @@
-// components/containers/MediaListContainer.tsx
-
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import MediaList from "@/components/media/MediaList";
 import LoadingIndicator from "@/components/ui/LoadingIndicator";
@@ -14,7 +12,11 @@ interface MediaListContainerProps {
   mediaData: MediaItem[] | null;
   currentSearchTerm: string;
   currentSearchType: string;
+  currentPage: number;
+  onPageChange: (page: number) => void;
 }
+
+const ITEMS_PER_PAGE = 10;
 
 const MediaListContainer: React.FC<MediaListContainerProps> = ({
   hasSearched,
@@ -23,6 +25,8 @@ const MediaListContainer: React.FC<MediaListContainerProps> = ({
   mediaData,
   currentSearchTerm,
   currentSearchType,
+  currentPage,
+  onPageChange,
 }) => {
   if (!hasSearched) {
     return (
@@ -44,7 +48,63 @@ const MediaListContainer: React.FC<MediaListContainerProps> = ({
   }
 
   if (mediaData && mediaData.length > 0) {
-    return <MediaList data={mediaData} />;
+    const totalItems = mediaData.length;
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = currentPage * ITEMS_PER_PAGE;
+    const displayedData = mediaData.slice(startIndex, endIndex);
+    const PaginationControls = (
+      <View style={styles.paginationContainer}>
+        <TouchableOpacity
+          onPress={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          style={[
+            styles.pageButton,
+            currentPage === 1 && styles.disabledButton,
+          ]}
+        >
+          <Text
+            style={[
+              styles.buttonText,
+              currentPage === 1 && styles.disabledText,
+            ]}
+          >
+            {"< Prev"}
+          </Text>
+        </TouchableOpacity>
+
+        <Text style={styles.pageText}>
+          {`Page ${currentPage} of ${totalPages}`}
+        </Text>
+
+        <TouchableOpacity
+          onPress={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          style={[
+            styles.pageButton,
+            currentPage === totalPages && styles.disabledButton,
+          ]}
+        >
+          <Text
+            style={[
+              styles.buttonText,
+              currentPage === totalPages && styles.disabledText,
+            ]}
+          >
+            {"Next >"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+
+    return (
+      <MediaList
+        data={displayedData}
+        listFooter={totalItems > ITEMS_PER_PAGE ? PaginationControls : null}
+        currentPage={currentPage}
+      />
+    );
   }
 
   return (
@@ -90,5 +150,38 @@ const styles = StyleSheet.create({
     color: "#555",
     textAlign: "center",
     marginBottom: 4,
+  },
+  paginationContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    borderTopWidth: 1,
+    borderTopColor: "#eee",
+    backgroundColor: "#f9f9f9",
+    marginTop: 10,
+  },
+  pageButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    backgroundColor: "#007AFF",
+    borderRadius: 8,
+  },
+  disabledButton: {
+    backgroundColor: "#ccc",
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: 15,
+  },
+  disabledText: {
+    color: "#666",
+  },
+  pageText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#333",
   },
 });

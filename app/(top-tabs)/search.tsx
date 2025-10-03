@@ -9,12 +9,13 @@ export default function SearchScreen() {
   const [currentSearchTerm, setCurrentSearchTerm] = useState("");
   const [currentSearchType, setCurrentSearchType] = useState<string>("multi");
   const [hasSearched, setHasSearched] = useState(false);
-
   const currentSearchTypeCasted = currentSearchType as SearchType;
+  const [currentPage, setCurrentPage] = useState(1);
   const handleSearch = (searchTerm: string, searchType: string) => {
     setCurrentSearchTerm(searchTerm);
     setCurrentSearchType(searchType);
     setHasSearched(true);
+    setCurrentPage(1);
   };
 
   const {
@@ -44,6 +45,8 @@ export default function SearchScreen() {
           mediaData={mediaData}
           currentSearchTerm={currentSearchTerm}
           currentSearchType={currentSearchType}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
         />
       </View>
     </View>
