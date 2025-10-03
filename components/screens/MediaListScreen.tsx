@@ -1,7 +1,7 @@
 // components/screens/MediaListScreen.tsx
 
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import MediaList from "@/components/media/MediaList";
@@ -9,7 +9,6 @@ import LoadingIndicator from "@/components/ui/LoadingIndicator";
 import SelectionModal from "@/components/ui/SelectionModal";
 import { MediaItem, useFetchMedia } from "@/hooks/use-fetch-media";
 
-// 汎用的なオプションの型を定義
 interface MediaOption {
   label: string;
   value: string;
@@ -18,7 +17,6 @@ interface MediaOption {
 
 interface MediaListScreenProps {
   options: MediaOption[];
-  // エラー表示を分かりやすくするため、表示タイプもPropsとして受け取る
   mediaType: "Movies" | "TV Shows";
 }
 
@@ -26,11 +24,10 @@ export default function MediaListScreen({
   options,
   mediaType,
 }: MediaListScreenProps) {
-  // 常に最初のオプションをデフォルトとして使用
-  const [selectedEndpoint, setSelectedEndpoint] = React.useState<string>(
+  const [selectedEndpoint, setSelectedEndpoint] = useState<string>(
     options[0].value
   );
-  const [isModalVisible, setModalVisible] = React.useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const {
     data: mediaData,
@@ -41,17 +38,14 @@ export default function MediaListScreen({
   const currentOption =
     options.find((opt) => opt.value === selectedEndpoint) || options[0];
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+  const toggleModal = useCallback(() => {
+    setModalVisible((prev) => !prev);
+  }, []);
 
-  // endpoint の型を string に統一
-  const handleSelect = (endpoint: string) => {
+  const handleSelect = useCallback((endpoint: string) => {
     setSelectedEndpoint(endpoint);
     setModalVisible(false);
-  };
-
-  // --- UI レンダリング ---
+  }, []);
 
   if (mediaLoading) {
     return <LoadingIndicator />;
@@ -71,7 +65,6 @@ export default function MediaListScreen({
 
   return (
     <View style={styles.container}>
-      {/* 1. ドロップダウンヘッダー */}
       <View style={styles.headerWrapper}>
         <TouchableOpacity style={styles.dropdownButton} onPress={toggleModal}>
           <Text style={styles.dropdownText}>
@@ -86,7 +79,6 @@ export default function MediaListScreen({
         </TouchableOpacity>
       </View>
 
-      {/* 2. リスト表示エリア */}
       <View style={styles.listContainer}>
         {mediaData ? (
           <MediaList data={mediaData} />
@@ -97,7 +89,6 @@ export default function MediaListScreen({
         )}
       </View>
 
-      {/* 3. 選択モーダル */}
       <SelectionModal
         isVisible={isModalVisible}
         options={options}
@@ -108,8 +99,6 @@ export default function MediaListScreen({
     </View>
   );
 }
-
-// --- スタイルシート ---
 
 const styles = StyleSheet.create({
   container: {
@@ -145,7 +134,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  // エラー表示関連のスタイル (movies.tsx から移動)
   errorContainer: {
     flex: 1,
     justifyContent: "center",

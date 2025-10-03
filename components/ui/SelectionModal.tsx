@@ -1,13 +1,10 @@
 // components/ui/SelectionModal.tsx
 
-// components/ui/SelectionModal.tsx
-
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ReactNativeModal from "react-native-modal";
 
-// 汎用的なオプションの型を定義
 interface Option {
   label: string;
   value: string;
@@ -22,6 +19,33 @@ interface SelectionModalProps {
   onClose: () => void;
 }
 
+interface ModalOptionItemProps {
+  option: Option;
+  selectedValue: string;
+  onSelect: (value: string) => void;
+}
+
+const ModalOptionItem: React.FC<ModalOptionItemProps> = ({
+  option,
+  selectedValue,
+  onSelect,
+}) => {
+  const isSelected = option.value === selectedValue;
+  return (
+    <TouchableOpacity
+      style={[styles.modalItem, isSelected && styles.modalItemSelected]}
+      onPress={() => onSelect(option.value)}
+    >
+      <Text style={styles.modalItemText}>
+        {option.display.toLowerCase().replace(" ", "_")}
+      </Text>
+      {isSelected && (
+        <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
+      )}
+    </TouchableOpacity>
+  );
+};
+
 const SelectionModal: React.FC<SelectionModalProps> = ({
   isVisible,
   options,
@@ -29,25 +53,6 @@ const SelectionModal: React.FC<SelectionModalProps> = ({
   onSelect,
   onClose,
 }) => {
-  // モーダル内の個別の選択肢コンポーネント
-  const ModalOptionItem: React.FC<{ option: Option }> = ({ option }) => {
-    const isSelected = option.value === selectedValue;
-    return (
-      <TouchableOpacity
-        style={[styles.modalItem, isSelected && styles.modalItemSelected]}
-        onPress={() => onSelect(option.value)}
-      >
-        <Text style={styles.modalItemText}>
-          {/* displayを小文字にし、スペースをアンダースコアに変換するロジックを適用 */}
-          {option.display.toLowerCase().replace(" ", "_")}
-        </Text>
-        {isSelected && (
-          <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
-        )}
-      </TouchableOpacity>
-    );
-  };
-
   return (
     <ReactNativeModal
       isVisible={isVisible}
@@ -58,8 +63,12 @@ const SelectionModal: React.FC<SelectionModalProps> = ({
     >
       <View style={styles.modalContent}>
         {options.map((option) => (
-          // key は value で問題ありません（stringであるため）
-          <ModalOptionItem key={option.value} option={option} />
+          <ModalOptionItem
+            key={option.value}
+            option={option}
+            selectedValue={selectedValue}
+            onSelect={onSelect}
+          />
         ))}
       </View>
     </ReactNativeModal>
@@ -68,10 +77,7 @@ const SelectionModal: React.FC<SelectionModalProps> = ({
 
 export default SelectionModal;
 
-// --- スタイルシート ---
-
 const styles = StyleSheet.create({
-  // --- モーダル関連のスタイル ---
   bottomModal: {
     justifyContent: "flex-end",
     margin: 0,
@@ -94,12 +100,12 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   modalItemSelected: {
-    backgroundColor: "#E8F5E9", // 薄い緑の背景
+    backgroundColor: "#E8F5E9",
     borderWidth: 1,
     borderColor: "#4CAF50",
   },
   modalItemText: {
     fontSize: 16,
-    textTransform: "none", // 小文字で表示
+    textTransform: "none",
   },
 });
