@@ -1,5 +1,3 @@
-// app/(top-tabs)/search.tsx (最終修正版)
-
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
@@ -11,18 +9,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-// 🚨 ReactNativeModal は SelectionModal に移動したため削除
 
 import MediaListContainer from "@/components/containers/MediaListContainer";
 import SelectionModal from "@/components/ui/SelectionModal";
 import { SearchType, useFetchSearch } from "@/hooks/use-fetch-search";
 
-// searchTypes を SelectionModal に適合する形式に修正
 const searchTypes = [
   { label: "multi", value: "multi", display: "multi" },
   { label: "movie", value: "movie", display: "movie" },
   { label: "tv", value: "tv", display: "tv" },
 ];
+
 type SearchOption = (typeof searchTypes)[0];
 
 export default function SearchScreen() {
@@ -31,15 +28,11 @@ export default function SearchScreen() {
     searchTypes[0].value
   );
   const [isModalVisible, setModalVisible] = useState(false);
-
-  // 検索実行時にのみ更新されるステート
   const [currentSearchTerm, setCurrentSearchTerm] = useState("");
   const [currentSearchType, setCurrentSearchType] = useState<string>(
     searchTypes[0].value
   );
   const [hasSearched, setHasSearched] = useState(false);
-
-  // currentSearchType が常に SearchType 型であることを保証
   const currentSearchTypeCasted = currentSearchType as SearchType;
 
   const {
@@ -48,7 +41,8 @@ export default function SearchScreen() {
     error: mediaError,
   } = useFetchSearch(currentSearchTerm, currentSearchTypeCasted);
 
-  const currentOption =
+  // 💡 修正点: currentOptionにSearchOption型を適用
+  const currentOption: SearchOption =
     searchTypes.find((type) => type.value === selectedSearchType) ||
     searchTypes[0];
 
@@ -72,7 +66,15 @@ export default function SearchScreen() {
     setModalVisible(false);
   };
 
-  // 🚨 ModalTypeItem と getCurrentOptionLabel、renderContent は削除
+  // Errorオブジェクトを安全に文字列化するロジックを再利用
+  const errorString =
+    mediaError == null
+      ? null
+      : mediaError instanceof Error
+      ? mediaError.message
+      : typeof mediaError === "string"
+      ? mediaError
+      : String(mediaError);
 
   return (
     <View style={styles.container}>
@@ -99,10 +101,7 @@ export default function SearchScreen() {
         <Text style={styles.label}>Choose Search Type</Text>
         <View style={styles.rowContainer}>
           <TouchableOpacity style={styles.dropdownButton} onPress={toggleModal}>
-            <Text style={styles.dropdownText}>
-              {/* display を使って表示、大文字化ロジックは不要 */}
-              {currentOption.display}
-            </Text>
+            <Text style={styles.dropdownText}>{currentOption.display}</Text>
             <Ionicons
               name="chevron-down"
               size={16}
@@ -119,19 +118,17 @@ export default function SearchScreen() {
         <Text style={styles.warningText}>Please select a search type</Text>
       </View>
 
-      {/* 🚨 MediaListContainer に置き換え */}
       <View style={styles.listContainer}>
         <MediaListContainer
           hasSearched={hasSearched}
           mediaLoading={mediaLoading}
-          mediaError={mediaError}
+          mediaError={errorString}
           mediaData={mediaData}
           currentSearchTerm={currentSearchTerm}
           currentSearchType={currentSearchType}
         />
       </View>
 
-      {/* 🚨 SelectionModal に置き換え */}
       <SelectionModal
         isVisible={isModalVisible}
         onClose={toggleModal}

@@ -1,12 +1,10 @@
-// app/_layout.tsx (最終確定版 - ヘッダー修正とStatusBar)
-
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar"; // expo-status-bar からインポート
+import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
@@ -31,22 +29,39 @@ export default function RootLayout() {
               backgroundColor: "#002E4E",
             },
             headerTintColor: "white",
+            // 💡 修正点: コンテンツ領域の背景色を白に設定
+            contentStyle: {
+              backgroundColor: "#ffffff",
+            },
           }}
         />
-        {/* 【新規】映画詳細画面のルートを追加 (ファイル名: movie/[id].tsx を想定) */}
         <Stack.Screen
-          name="movie/[id]" // ファイル名に合わせる
+          name="movie/[id]"
           options={{
-            title: "Detail", // 遷移先のヘッダータイトル
+            title: "Detail",
             headerStyle: {
               backgroundColor: "#002E4E",
             },
             headerTintColor: "white",
+            // 💡 修正点: コンテンツ領域の背景色を白に設定
+            contentStyle: {
+              backgroundColor: "#ffffff",
+            },
           }}
         />
         <Stack.Screen
-          name="modal"
-          options={{ presentation: "modal", title: "Modal" }}
+          name="tv/[id]"
+          options={{
+            title: "Detail",
+            headerStyle: {
+              backgroundColor: "#002E4E",
+            },
+            headerTintColor: "white",
+            // 💡 修正点: コンテンツ領域の背景色を白に設定
+            contentStyle: {
+              backgroundColor: "#ffffff",
+            },
+          }}
         />
       </Stack>
       <StatusBar style="light" />
