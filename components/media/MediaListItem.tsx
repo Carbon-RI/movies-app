@@ -19,7 +19,7 @@ export default function MediaListItem({ item }: MediaListItemProps) {
     : "N/A";
 
   const formattedDate = date
-    ? new Date(date).toDateString().substring(4)
+    ? new Date(date).toISOString().substring(0, 10)
     : "N/A";
 
   const handlePress = () => {
@@ -55,7 +55,9 @@ export default function MediaListItem({ item }: MediaListItemProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    padding: 15,
+    alignItems: "center",
+    paddingHorizontal: 15,
+    paddingVertical: 8,
     borderBottomWidth: 1,
     borderBottomColor: "#f0f0f0",
     backgroundColor: "#fff",
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 8,
-    backgroundColor: "skyblue",
+    backgroundColor: "#07c1f5",
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 5,

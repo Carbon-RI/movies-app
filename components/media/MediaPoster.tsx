@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
   container: {
     width: 90,
     height: 90,
-    borderRadius: 8,
     overflow: "hidden",
     backgroundColor: "#eee",
     marginRight: 15,
@@ -57,9 +56,9 @@ const styles = StyleSheet.create({
   placeholder: {
     width: 90,
     height: 90,
-    borderRadius: 8,
     backgroundColor: "#ccc",
     justifyContent: "center",
     alignItems: "center",
+    marginRight: 15,
   },
 });

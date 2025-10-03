@@ -81,7 +81,7 @@ export default function MediaListScreen({
 
       <View style={styles.listContainer}>
         {mediaData ? (
-          <MediaList data={mediaData} />
+          <MediaList data={mediaData} currentPage={1} />
         ) : (
           <Text style={styles.noData}>
             No data available for this category.
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   dropdownButton: {
+    width: "70%",
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 8,

@@ -1,15 +1,27 @@
-// components/media/MediaList.tsx
-
 import { MediaItem } from "@/hooks/use-fetch-media";
-import React from "react";
+import React, { ReactElement, useRef, useEffect } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import MediaListItem from "./MediaListItem";
 
 interface MediaListProps {
   data: MediaItem[];
+  listFooter?: ReactElement | null;
+  currentPage: number;
 }
 
-export default function MediaList({ data }: MediaListProps) {
+export default function MediaList({
+  data,
+  listFooter,
+  currentPage,
+}: MediaListProps) {
+  const flatListRef = useRef<FlatList<MediaItem>>(null);
+
+  useEffect(() => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({ offset: 0, animated: true });
+    }
+  }, [currentPage]);
+
   if (data.length === 0) {
     return (
       <View style={styles.emptyContainer}>
@@ -20,11 +32,14 @@ export default function MediaList({ data }: MediaListProps) {
 
   return (
     <FlatList
+      ref={flatListRef}
       data={data}
       renderItem={({ item }) => <MediaListItem item={item} />}
       keyExtractor={(item) => item.id.toString()}
       showsVerticalScrollIndicator={true}
       style={styles.list}
+      ListFooterComponent={listFooter}
+      contentContainerStyle={styles.contentContainer}
     />
   );
 }
@@ -32,6 +47,9 @@ export default function MediaList({ data }: MediaListProps) {
 const styles = StyleSheet.create({
   list: {
     flex: 1,
+  },
+  contentContainer: {
+    paddingBottom: 20,
   },
   emptyContainer: {
     alignItems: "center",

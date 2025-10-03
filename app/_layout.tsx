@@ -1,23 +1,16 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+// app/_layout.tsx
+
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
-
-import { useColorScheme } from "@/hooks/use-color-scheme";
-
+import CustomBackButton from "../components/ui/CustomBackButton";
 export const unstable_settings = {
   anchor: "(top-tabs)",
 };
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === "light" ? DarkTheme : DefaultTheme}>
+    <>
       <Stack>
         <Stack.Screen
           name="(top-tabs)"
@@ -26,7 +19,7 @@ export default function RootLayout() {
             title: "Movies App",
             headerTransparent: false,
             headerStyle: {
-              backgroundColor: "#002E4E",
+              backgroundColor: "#1f3140",
             },
             headerTintColor: "white",
 
@@ -38,33 +31,30 @@ export default function RootLayout() {
         <Stack.Screen
           name="movie/[id]"
           options={{
-            title: "Detail",
             headerStyle: {
-              backgroundColor: "#002E4E",
+              backgroundColor: "white",
             },
-            headerTintColor: "white",
-
             contentStyle: {
               backgroundColor: "#ffffff",
             },
+            headerLeft: () => <CustomBackButton />,
           }}
         />
         <Stack.Screen
           name="tv/[id]"
           options={{
-            title: "Detail",
             headerStyle: {
-              backgroundColor: "#002E4E",
+              backgroundColor: "white",
             },
-            headerTintColor: "white",
 
             contentStyle: {
               backgroundColor: "#ffffff",
             },
+            headerLeft: () => <CustomBackButton />,
           }}
         />
       </Stack>
       <StatusBar style="light" />
-    </ThemeProvider>
+    </>
   );
 }
